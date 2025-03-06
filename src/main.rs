@@ -1,11 +1,8 @@
 mod graph;
 mod visualizer;
 
-use graph::Graph;
+use ggez::{conf::WindowSetup, conf::NumSamples, ContextBuilder};
 use visualizer::GraphVisualizer;
-
-use ggez::ContextBuilder;
-
 
 fn main() {
     let (
@@ -15,17 +12,17 @@ fn main() {
         "hello_ggez",
         "ns8"
     )
+        .window_setup(WindowSetup {
+            title: "SmoothGraph".to_string(),
+            samples: NumSamples::One,
+            vsync: false,
+            icon: "".to_string(),
+            srgb: true
+        })
         .build()
         .unwrap();
 
-    //let graph = Graph::new(
-    //    [0.0; 1920],
-    //    2.0,
-    //    (255, 255, 255)
-    //);
-
     let graph_visualizer = GraphVisualizer::new(&mut ctx);
-
 
     ggez::event::run(ctx, event_loop, graph_visualizer);
 }

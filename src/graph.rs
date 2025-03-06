@@ -1,17 +1,15 @@
 pub struct Graph {
     current_points: [f64; 1920],
     target_points: [f64; 1920],
-    thickness: f32,
-    color: (u8, u8, u8),
+    pub color: (u8, u8, u8),
 }
 
 
 impl Graph {
-    pub fn new(points: [f64; 1920], thickness: f32, color: (u8, u8, u8)) -> Self {
+    pub fn new(points: [f64; 1920], color: (u8, u8, u8)) -> Self {
         Self {
             current_points: points.clone(),
             target_points: points,
-            thickness,
             color
         }
     }
@@ -26,7 +24,7 @@ impl Graph {
         }
     }
 
-    pub fn update_points(&mut self, func: fn(i64) -> f64) {
+    pub fn update_func(&mut self, func: fn(i64) -> f64) {
         for i in 0..1920 {
             self.target_points[i] = func(i as i64); // TODO: Make this correct (not i as i64)
         }
