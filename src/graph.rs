@@ -1,12 +1,15 @@
+use ggez::graphics::Color;
+
+
 pub struct Graph {
     current_points: [f64; 1920],
     target_points: [f64; 1920],
-    pub color: (u8, u8, u8),
+    pub color: Color,
 }
 
 
 impl Graph {
-    pub fn new(points: [f64; 1920], color: (u8, u8, u8)) -> Self {
+    pub fn new(points: [f64; 1920], color: Color) -> Self {
         Self {
             current_points: points.clone(),
             target_points: points,
