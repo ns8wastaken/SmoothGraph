@@ -23,13 +23,14 @@ impl Graph {
 
     pub fn lerp_points(&mut self) {
         for i in 0..1920 {
-            self.current_points[i] = (self.target_points[i] - self.current_points[i]) / 2.0;
+            let x = self.target_points[i] - self.current_points[i];
+            self.current_points[i] += x / 1.0;
         }
     }
 
-    pub fn update_func(&mut self, func: fn(i64) -> f64) {
+    pub fn update_func(&mut self, x_origin: f64, unit_length: f64, func: fn(f64) -> f64) {
         for i in 0..1920 {
-            self.target_points[i] = func(i as i64); // TODO: Make this correct (not i as i64)
+            self.target_points[i] = func((i as f64 - x_origin) / unit_length);
         }
     }
 }
