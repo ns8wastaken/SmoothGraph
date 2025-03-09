@@ -16,14 +16,16 @@ pub struct GraphVisualizer {
 
 impl GraphVisualizer {
     pub fn new(_ctx: &mut Context) -> GraphVisualizer {
+        let (width, height) = _ctx.gfx.drawable_size();
+
         GraphVisualizer {
             graph: Graph::new(
-                [0.0; 1920],
+                width as usize,
                 Color::new(0.0, 0.369, 1.0, 1.0)
             ),
             unit_length: 100.0,
-            graph_origin: Vec2::new(0.0, _ctx.gfx.drawable_size().1),
-            function: |x: f64| x.powi(2),
+            graph_origin: Vec2::new(0.0, height),
+            function: |x: f64| (2.0 * x.sin() * x.cos()) / x.powi(2),
         }
     }
 
@@ -50,7 +52,7 @@ impl GraphVisualizer {
                     Vec2::new(width, i as f32)
                 ],
                 1.0,
-                Color::WHITE
+                Color::new(0.5, 0.5, 0.5, 1.0),
             )?;
 
             canvas.draw(&line, draw_param);
@@ -68,7 +70,7 @@ impl GraphVisualizer {
                     Vec2::new(width, i as f32)
                 ],
                 1.0,
-                Color::WHITE
+                Color::new(0.5, 0.5, 0.5, 1.0),
             )?;
 
             canvas.draw(&line, draw_param);
@@ -86,7 +88,7 @@ impl GraphVisualizer {
                     Vec2::new(i as f32, height)
                 ],
                 1.0,
-                Color::WHITE
+                Color::new(0.5, 0.5, 0.5, 1.0),
             )?;
 
             canvas.draw(&line, draw_param);
@@ -104,7 +106,7 @@ impl GraphVisualizer {
                     Vec2::new(i as f32, height)
                 ],
                 1.0,
-                Color::WHITE
+                Color::new(0.5, 0.5, 0.5, 1.0),
             )?;
 
             canvas.draw(&line, draw_param);
@@ -118,6 +120,15 @@ impl GraphVisualizer {
 
 
 impl EventHandler for GraphVisualizer {
+    fn mouse_wheel_event(&mut self, _ctx: &mut Context, _x: f32, y: f32) -> Result<(), ggez::GameError> {
+        if y > 0.0 {
+            self.unit_length = 200.0f32.min(self.unit_length + 10.0);
+        } else if y < 0.0 {
+            self.unit_length = 20.0f32.max(self.unit_length - 10.0);
+        }
+        Ok(())
+    }
+
     fn update(&mut self, _ctx: &mut Context) -> GameResult {
         self.graph.update_func(
             self.graph_origin.x as f64,
